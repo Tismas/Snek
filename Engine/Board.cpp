@@ -32,6 +32,6 @@ void Board::drawBorder() {
 	}
 	for (int x = 0; x < width*cellSize; ++x) {
 		gfx.PutPixel(offsetX + x, offsetY - 1, borderColor);
-		gfx.PutPixel(offsetX + x, offsetY + width*cellSize + 1, borderColor);
+		gfx.PutPixel(offsetX + x, offsetY + height*cellSize + 1, borderColor);
 	}
 }

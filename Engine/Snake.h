@@ -15,7 +15,7 @@ class Snake {
 		bool operator==(const Segment& rv) { return x == rv.x && y == rv.y; }
 	};
 	static constexpr Color headColor = Colors::Blue;
-	static constexpr Color bodyColor = Colors::Cyan;
+	static constexpr Color bodyColors[] = { {0,40,200}, {0,20,100} };
 	static constexpr int maxSegments = 100;
 	int nSegments = 0;
 	float x, y, speed;

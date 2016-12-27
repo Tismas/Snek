@@ -3,7 +3,7 @@
 
 
 Snake::Snake(float x, float y) : x(x), y(y) {
-	speed = 2.5f;
+	speed = 3.5f;
 }
 
 Snake::~Snake() {
@@ -17,8 +17,8 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 	else if (dir == right) x += speed * dt;
 	else y += speed * dt;
 
-	if (x < 0) x = board.getWidth() - speed;
-	if (y < 0) y = board.getHeight() - speed;
+	if (x < 0) x = board.getWidth() - speed*dt;
+	if (y < 0) y = board.getHeight() - speed*dt;
 	if (x >= board.getWidth()) x = 0;
 	if (y >= board.getHeight()) y = 0;
 
@@ -54,6 +54,6 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 void Snake::draw(Board& board) const {
 	board.drawCell((int)x, (int)y, headColor);
 	for (int i = 0; i < nSegments; ++i) {
-		board.drawCell(segments[i].x, segments[i].y, bodyColor);
+		board.drawCell(segments[i].x, segments[i].y, bodyColors[i % 2]);
 	}
 }

@@ -25,7 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	board(gfx, 20, 20),
+	board(gfx),
 	apple(10,10)
 {
 	apple.reposition(board);
