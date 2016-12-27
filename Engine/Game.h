@@ -20,9 +20,14 @@
  ******************************************************************************************/
 #pragma once
 
+#include <chrono>
+
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Board.h"
+#include "Snake.h"
+#include "Apple.h"
 
 class Game
 {
@@ -42,5 +47,10 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	Board board;
+	Snake snek;
+	Apple apple;
+	float dt;
+	std::chrono::steady_clock::time_point last;
 	/********************************/
 };

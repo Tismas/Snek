@@ -24,8 +24,13 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	board(gfx, 20, 20),
+	apple(10,10)
 {
+	apple.reposition(board);
+	dt = 0;
+	last = std::chrono::steady_clock::now();
 }
 
 void Game::Go()
@@ -38,8 +43,18 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	using namespace std::chrono;
+	auto mark = steady_clock::now();
+	std::chrono::duration<float> duration = mark - last;
+	dt = duration.count();
+	last = mark;
+
+	snek.update(board, wnd.kbd, apple, dt);
 }
 
 void Game::ComposeFrame()
 {
+	board.drawBorder();
+	apple.draw(board);
+	snek.draw(board);
 }
