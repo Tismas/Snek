@@ -26,7 +26,8 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	board(gfx),
-	apple(10,10)
+	apple(10,10),
+	snek(board.getWidth()/2,board.getHeight()/2)
 {
 	apple.reposition(board);
 	dt = 0;
@@ -49,7 +50,7 @@ void Game::UpdateModel()
 	dt = duration.count();
 	last = mark;
 
-	snek.update(board, wnd.kbd, apple, dt);
+	snek.update(board, wnd.kbd, apple, dt, obstacles);
 }
 
 void Game::ComposeFrame()
@@ -57,4 +58,7 @@ void Game::ComposeFrame()
 	board.drawBorder();
 	apple.draw(board);
 	snek.draw(board);
+	for (int i = 0; i < obstacles.size(); i++) {
+		obstacles[i].draw(board);
+	}
 }

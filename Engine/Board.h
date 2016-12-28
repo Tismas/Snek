@@ -10,7 +10,7 @@ class Board {
 	static constexpr Color borderColor = Colors::Gray;
 	Graphics& gfx;
 public:
-	Board(Graphics& gfx, int width = 45, int height = 35, int cellSize = 15);
+	Board(Graphics& gfx, int width = 39, int height = 29, int cellSize = 20);
 	~Board();
 
 	void drawCell(int x, int y, Color c);

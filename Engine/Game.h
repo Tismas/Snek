@@ -21,6 +21,7 @@
 #pragma once
 
 #include <chrono>
+#include <vector>
 
 #include "Keyboard.h"
 #include "Mouse.h"
@@ -28,6 +29,7 @@
 #include "Board.h"
 #include "Snake.h"
 #include "Apple.h"
+#include "Obstacle.h"
 
 class Game
 {
@@ -49,6 +51,7 @@ private:
 	/*  User Variables              */
 	Board board;
 	Snake snek;
+	std::vector<Obstacle> obstacles;
 	Apple apple;
 	float dt;
 	std::chrono::steady_clock::time_point last;

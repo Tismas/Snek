@@ -2,10 +2,12 @@
 
 #include "Board.h"
 #include "Colors.h"
+#include <vector>
 
 class Apple {
 	int x, y;
-	Color appleColor = Colors::Red;
+	int type;
+	static std::vector<Color> colors;
 public:
 	Apple(int x, int y);
 	~Apple();

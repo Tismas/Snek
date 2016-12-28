@@ -4,12 +4,14 @@
 
 Snake::Snake(float x, float y) : x(x), y(y) {
 	speed = 3.5f;
+	segments.push_back({ (int)x,(int)y + 1 });
+	segments.push_back({ (int)x,(int)y + 2 });
 }
 
 Snake::~Snake() {
 }
 
-void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float dt) {
+void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float dt, std::vector<Obstacle>& obstacles) {
 	int lastX = (int)x, lastY = (int)y;
 
 	if (dir == left) x-=speed * dt;
@@ -36,24 +38,23 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 	}
 
 	if (lastX != (int)x || lastY != (int)y) {
-		bool grow = false;
 		if (apple.x == (int)x && apple.y == (int)y) {
 			apple.reposition(board);
-			++nSegments;
-			if(nSegments > 1)
-				segments[nSegments - 1] = segments[nSegments - 2];
-			grow = true;
+			if (segments.size() >= 10) {
+				while (segments.size() >= 2) {
+					obstacles.push_back({ segments.back().x, segments.back().y });
+					segments.pop_back();
+				}
+			}
 		}
-		for (int i = nSegments - 1; i > 0; --i) {
-			segments[i] = segments[i - 1];
-		}
-		segments[0] = { lastX, lastY };
+		else if(segments.size())
+			segments.pop_back();
+		segments.push_front({ lastX, lastY });
 	}
 }
 
 void Snake::draw(Board& board) const {
 	board.drawCell((int)x, (int)y, headColor);
-	for (int i = 0; i < nSegments; ++i) {
+	for (int i = 0; i < segments.size(); ++i)
 		board.drawCell(segments[i].x, segments[i].y, bodyColors[i % 2]);
-	}
 }
