@@ -308,10 +308,32 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
-void Graphics::DrawRect(int x, int y, int width, int height, Color c) {
-	for (int i = y; i < y + height; ++i) {
-		for (int j = x; j < x + width; ++j) {
+void Graphics::DrawRect(int x0, int y0, int width, int height, Color c) {
+	for (int y = y0; y < y0 + height; ++y) {
+		for (int x = x0; x < x0 + width; ++x) {
 			PutPixel(x, y, c);
+		}
+	}
+}
+
+void Graphics::DrawCircle(int x0, int y0, int r, Color c) {
+	int sq_r = r*r;
+	for (int y = y0 - r; y < y0 + r; ++y) {
+		int dy = y0 - y;
+		for (int x = x0 - r; x < x0 + r; ++x) {
+			int dx = x0 - x;
+			int dist = dx*dx + dy*dy;
+			if (dist < sq_r) {
+				// float v = dist / (float)sq_r;
+				float v = (dx+dy) / (float)r;
+				v = (v + 1.5f) / 3.5f;
+				Color col = c;
+				col.SetR(unsigned char(c.GetR() * v));
+				col.SetG(unsigned char(c.GetG() * v));
+				col.SetB(unsigned char(c.GetB() * v));
+				unsigned char values[] = { col.GetR(), col.GetG(), col.GetB() };
+				PutPixel(x, y, col);
+			}
 		}
 	}
 }

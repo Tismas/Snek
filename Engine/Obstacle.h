@@ -4,9 +4,9 @@
 #include "Board.h"
 
 class Obstacle {
-	int x, y;
-	static constexpr Color c = Colors::LightGray;
+	static constexpr Color c = { 175, 171, 175 };
 public:
+	int x, y;
 	Obstacle(int x, int y);
 	~Obstacle();
 

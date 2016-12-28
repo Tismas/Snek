@@ -18,11 +18,12 @@ Board::~Board() {
 
 void Board::drawCell(int x0, int y0, Color c) {
 	assert(x0 >= 0 && y0 >= 0 && x0 < width && y0 < height);
-	for (int y = y0*cellSize+1; y < y0*cellSize + cellSize-1; ++y) {
-		for (int x = x0*cellSize+1; x < x0*cellSize + cellSize-1; ++x) {
-			gfx.DrawRect(offsetX + x, offsetY + y, cellSize, cellSize, c);
-		}
-	}
+	gfx.DrawRect(offsetX + x0*cellSize + 1, offsetY + y0*cellSize + 1, cellSize - 2, cellSize - 2, c);
+}
+
+void Board::drawCircle(int x0, int y0, Color c) {
+	assert(x0 >= 0 && y0 >= 0 && x0 < width && y0 < height);
+	gfx.DrawCircle(offsetX + x0*cellSize + cellSize/2, offsetY + y0*cellSize + cellSize/2, cellSize/2, c);
 }
 
 void Board::drawBorder() {

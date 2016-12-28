@@ -45,6 +45,7 @@ private:
 	/*  User Functions              */
 	/********************************/
 private:
+	bool gameOver = false;
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/

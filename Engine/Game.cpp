@@ -29,7 +29,7 @@ Game::Game( MainWindow& wnd )
 	apple(10,10),
 	snek(board.getWidth()/2,board.getHeight()/2)
 {
-	apple.reposition(board);
+	apple.reposition(board, obstacles);
 	dt = 0;
 	last = std::chrono::steady_clock::now();
 }
@@ -50,11 +50,26 @@ void Game::UpdateModel()
 	dt = duration.count();
 	last = mark;
 
+	if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
+		gameOver = false;
+		obstacles.clear();
+		apple.reposition(board, obstacles);
+		snek = Snake(board.getWidth() / 2, board.getHeight() / 2);
+	}
+
+	if (gameOver) return;
+
 	snek.update(board, wnd.kbd, apple, dt, obstacles);
+
+	if (snek.deathCheck(obstacles)) {
+		gameOver = true;
+	}
 }
 
 void Game::ComposeFrame()
 {
+	if (gameOver) return;
+
 	board.drawBorder();
 	apple.draw(board);
 	snek.draw(board);

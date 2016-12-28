@@ -2,10 +2,10 @@
 
 
 
-Snake::Snake(float x, float y) : x(x), y(y) {
+Snake::Snake(int x, int y) : x((float)x), y((float)y) {
 	speed = 3.5f;
-	segments.push_back({ (int)x,(int)y + 1 });
-	segments.push_back({ (int)x,(int)y + 2 });
+	segments.push_back({ x, y + 1 });
+	segments.push_back({ x, y + 2 });
 }
 
 Snake::~Snake() {
@@ -24,22 +24,23 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 	if (x >= board.getWidth()) x = 0;
 	if (y >= board.getHeight()) y = 0;
 
-	if (kbd.KeyIsPressed(VK_UP)) {
+	if (kbd.KeyIsPressed(VK_UP) && dir != down) {
 		dir = up;
 	}
-	else if (kbd.KeyIsPressed(VK_DOWN)) {
+	else if (kbd.KeyIsPressed(VK_DOWN) && dir != up) {
 		dir = down;
 	}
-	else if (kbd.KeyIsPressed(VK_LEFT)) {
+	else if (kbd.KeyIsPressed(VK_LEFT) && dir != right) {
 		dir = left;
 	}
-	else if (kbd.KeyIsPressed(VK_RIGHT)) {
+	else if (kbd.KeyIsPressed(VK_RIGHT) && dir != left) {
 		dir = right;
 	}
 
 	if (lastX != (int)x || lastY != (int)y) {
 		if (apple.x == (int)x && apple.y == (int)y) {
-			apple.reposition(board);
+			apple.reposition(board, obstacles);
+			speed += 0.1f;
 			if (segments.size() >= 10) {
 				while (segments.size() >= 2) {
 					obstacles.push_back({ segments.back().x, segments.back().y });
@@ -51,6 +52,26 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 			segments.pop_back();
 		segments.push_front({ lastX, lastY });
 	}
+}
+
+bool Snake::deathCheck(const std::vector<Obstacle>& obstacles) const {
+	for (int i = 0; i < segments.size(); i++) {
+		if (segments[i] == Segment((int)x, (int)y)) return true;
+		for (int j = i+1; j < segments.size(); j++) {
+			if (segments[i] == segments[j])
+				return true;
+		}
+	}
+	
+	for (int j = 0; j < obstacles.size(); j++) {
+		if (Segment((int)x, (int)y) == obstacles[j]) return true;
+		for (int i = 0; i < segments.size(); i++) {
+			if (segments[i] == obstacles[j])
+				return true;
+		}
+	}
+
+	return false;
 }
 
 void Snake::draw(Board& board) const {

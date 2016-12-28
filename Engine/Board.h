@@ -14,6 +14,7 @@ public:
 	~Board();
 
 	void drawCell(int x, int y, Color c);
+	void drawCircle(int x, int y, Color c);
 	void drawBorder();
 
 	inline int getWidth() const { return width; }
