@@ -26,12 +26,14 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	board(gfx),
-	apple(10,10),
-	snek(board.getWidth()/2,board.getHeight()/2)
+	apple(10,10)
 {
 	apple.reposition(board, obstacles);
 	dt = 0;
 	last = std::chrono::steady_clock::now();
+	unsigned char controls[4][4] = { { VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT }, { 'W', 'D', 'S', 'A' } };
+	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, up, controls[0]));
+	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, down, controls[1]));
 }
 
 void Game::Go()
@@ -42,8 +44,7 @@ void Game::Go()
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
-{
+void Game::UpdateModel() {
 	using namespace std::chrono;
 	auto mark = steady_clock::now();
 	std::chrono::duration<float> duration = mark - last;
@@ -54,26 +55,26 @@ void Game::UpdateModel()
 		gameOver = false;
 		obstacles.clear();
 		apple.reposition(board, obstacles);
-		snek = Snake(board.getWidth() / 2, board.getHeight() / 2);
+		for(int i=0;i<sneks.size();++i)
+			sneks[i].reset(board.getWidth()/2, board.getHeight()/2);
 	}
 
 	if (gameOver) return;
 
-	snek.update(board, wnd.kbd, apple, dt, obstacles);
-
-	if (snek.deathCheck(obstacles)) {
-		gameOver = true;
+	for (int i = 0; i < sneks.size(); ++i) {
+		sneks[i].update(board, wnd.kbd, apple, dt, obstacles);
+		if (sneks[i].deathCheck(obstacles, sneks)) {
+			gameOver = true;
+		}
 	}
 }
 
-void Game::ComposeFrame()
-{
+void Game::ComposeFrame() {
 	if (gameOver) return;
-
 	board.drawBorder();
 	apple.draw(board);
-	snek.draw(board);
-	for (int i = 0; i < obstacles.size(); i++) {
+	for (int i = 0; i < sneks.size(); ++i)
+		sneks[i].draw(board);
+	for (int i = 0; i < obstacles.size(); i++)
 		obstacles[i].draw(board);
-	}
 }

@@ -51,7 +51,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	Board board;
-	Snake snek;
+	std::vector<Snake> sneks;
 	std::vector<Obstacle> obstacles;
 	Apple apple;
 	float dt;
