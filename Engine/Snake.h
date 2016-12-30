@@ -9,7 +9,7 @@
 #include "Apple.h"
 
 enum direction {
-	left, up, right, down
+	left, up, right, down, none
 };
 
 class Snake {
@@ -21,14 +21,15 @@ class Snake {
 		bool operator==(const Obstacle& rv) const { return x == rv.x && y == rv.y; }
 	};
 	static constexpr Color headColor = Colors::Yellow;
-	static constexpr Color bodyColors[] = { {0,200,40}, {0,100,20} };
+	Color bodyColors[2];
 	
 	float x, y, speed;
 	std::deque<Segment> segments;
 	direction dir;
+	direction pending = none;
 	unsigned char controls[4];
 public:
-	Snake(int x = 5, int y = 5, direction dir = up, const unsigned char controls[] = NULL);
+	Snake(int x = 5, int y = 5, direction dir = up, const unsigned char controls[] = NULL, Color BaseColor = Colors::Green);
 	~Snake();
 
 	void draw(Board& board) const;

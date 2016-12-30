@@ -1,5 +1,5 @@
-/****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+/******************************************************************************************
+ *	Chili DirectX Framework Version 16.07.20											  *
  *	Game.cpp																			  *
  *	Copyright 2016 PlanetChili.net <http://www.planetchili.net>							  *
  *																						  *
@@ -21,24 +21,25 @@
 #include "MainWindow.h"
 #include "Game.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd ),
+	wnd(wnd),
+	gfx(wnd),
 	board(gfx),
-	apple(10,10)
+	apple(10, 10) 
 {
 	apple.reposition(board, obstacles);
 	dt = 0;
 	last = std::chrono::steady_clock::now();
 	unsigned char controls[4][4] = { { VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT }, { 'W', 'D', 'S', 'A' } };
-	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, up, controls[0]));
-	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, down, controls[1]));
+	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, up, controls[0], { 20,200,20 }));
+	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, down, controls[1], { 200,20,20 }));
+	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }));
+	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, right, controls[3], { 20,200,200 }));
 }
 
-void Game::Go()
-{
-	gfx.BeginFrame();	
+void Game::Go() {
+	gfx.BeginFrame();
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
@@ -55,8 +56,8 @@ void Game::UpdateModel() {
 		gameOver = false;
 		obstacles.clear();
 		apple.reposition(board, obstacles);
-		for(int i=0;i<sneks.size();++i)
-			sneks[i].reset(board.getWidth()/2, board.getHeight()/2);
+		for (int i = 0; i < sneks.size(); ++i)
+			sneks[i].reset(board.getWidth() / 2, board.getHeight() / 2);
 	}
 
 	if (gameOver) return;

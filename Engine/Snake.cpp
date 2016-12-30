@@ -2,16 +2,28 @@
 
 
 
-Snake::Snake(int x, int y, direction dir, const unsigned char controls[]) : dir(dir) {
+Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color BaseColor) : dir(dir) {
 	if (dir == up) {
 		++x;
 		segments.push_back({ x, y + 1 });
 		segments.push_back({ x, y + 2 });
 	}
-	else if(dir == down){
+	else if (dir == down) {
 		--x;
 		segments.push_back({ x, y - 1 });
 		segments.push_back({ x, y - 2 });
+	}
+	else if (dir == left) {
+		x -= 5;
+		--y;
+		segments.push_back({ x + 1, y });
+		segments.push_back({ x + 2, y });
+	}
+	else if (dir == right) {
+		x += 5;
+		++y;
+		segments.push_back({ x - 1, y });
+		segments.push_back({ x - 2, y });
 	}
 	this->x = (float)x;
 	this->y = (float)y;
@@ -20,13 +32,16 @@ Snake::Snake(int x, int y, direction dir, const unsigned char controls[]) : dir(
 	for (int i = 0; i < 4; i++) {
 		this->controls[i] = controls[i];
 	}
+
+	bodyColors[0] = BaseColor;
+	bodyColors[1] = {(unsigned char)(BaseColor.GetR()*0.7), (unsigned char)(BaseColor.GetG()*0.7) , (unsigned char)(BaseColor.GetB()*0.7) };
 }
 
 Snake::~Snake() {
 }
 
 void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float dt, std::vector<Obstacle>& obstacles) {
-	int lastX = (int)x, lastY = (int)y;	
+	int lastX = (int)x, lastY = (int)y;
 
 	if (dir == left) x -= speed * dt;
 	else if (dir == up) y -= speed * dt;
@@ -38,20 +53,46 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 	if (x >= board.getWidth()) x = 0;
 	if (y >= board.getHeight()) y = 0;
 
+	bool moved = lastX != (int)x || lastY != (int)y;
+
 	if (kbd.KeyIsPressed(controls[0]) && dir != down) {
-		dir = up;
-	}
-	else if (kbd.KeyIsPressed(controls[1]) && dir != left) {
-		dir = right;
+		if (segments[0].x == lastX || segments[0].x == (int)x)
+			pending = up;
+		else {
+			dir = up;
+			pending = none;
+		}
 	}
 	else if (kbd.KeyIsPressed(controls[2]) && dir != up) {
-		dir = down;
+		if (segments[0].x == lastX || segments[0].x == (int)x)
+			pending = down;
+		else {
+			dir = down;
+			pending = none;
+		}
+	}
+	if (kbd.KeyIsPressed(controls[1]) && dir != left) {
+		if (segments[0].y == lastY || segments[0].y == (int)y)
+			pending = right;
+		else {
+			dir = right;
+			pending = none;
+		}
 	}
 	else if (kbd.KeyIsPressed(controls[3]) && dir != right) {
-		dir = left;
+		if (segments[0].y == lastY || segments[0].y == (int)y)
+			pending = left;
+		else {
+			dir = left;
+			pending = none;
+		}
 	}
 
-	if (lastX != (int)x || lastY != (int)y) {
+	if (moved) {
+		if (pending != none) {
+			dir = pending;
+			pending = none;
+		}
 		if (apple.x == (int)x && apple.y == (int)y) {
 			apple.reposition(board, obstacles);
 			speed += 0.1f;
@@ -69,7 +110,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 }
 
 bool Snake::deathCheck(const std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks) const {
-	for(int i=0;i<sneks.size();++i) {
+	for (int i = 0; i < sneks.size(); ++i) {
 		if (this == &sneks[i]) continue;
 		Segment head = { (int)x, (int)y };
 		for (int j = 0; j < sneks[i].segments.size(); j++) {
