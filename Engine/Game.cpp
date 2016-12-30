@@ -25,12 +25,16 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	board(gfx),
-	apple(10, 10) 
+	board(gfx) 
 {
-	apple.reposition(board, obstacles);
+	for (int i = 0; i < 5; i++) {
+		apples.push_back(Apple(board,sneks,obstacles));
+	}
 	dt = 0;
+
 	last = std::chrono::steady_clock::now();
+	lastAppleSpawn = std::chrono::steady_clock::now();
+	
 	unsigned char controls[4][4] = { { VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT }, { 'W', 'D', 'S', 'A' } };
 	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, up, controls[0], { 20,200,20 }));
 	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, down, controls[1], { 200,20,20 }));
@@ -48,14 +52,23 @@ void Game::Go() {
 void Game::UpdateModel() {
 	using namespace std::chrono;
 	auto mark = steady_clock::now();
+
 	std::chrono::duration<float> duration = mark - last;
 	dt = duration.count();
 	last = mark;
 
+	std::chrono::duration<float> timeSinceLastAppleSpawn = mark - lastAppleSpawn;
+	if (apples.size() < minApples || apples.size() < maxApples && timeSinceLastAppleSpawn.count() >= 5.0f) {
+		apples.push_back(Apple(board, sneks, obstacles));
+		lastAppleSpawn = mark;
+	}
+
 	if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
 		gameOver = false;
 		obstacles.clear();
-		apple.reposition(board, obstacles);
+
+		for (int i = 0; i < apples.size(); ++i)
+			apples[i].reposition(board, sneks, obstacles);
 		for (int i = 0; i < sneks.size(); ++i)
 			sneks[i].reset(board.getWidth() / 2, board.getHeight() / 2);
 	}
@@ -63,7 +76,7 @@ void Game::UpdateModel() {
 	if (gameOver) return;
 
 	for (int i = 0; i < sneks.size(); ++i) {
-		sneks[i].update(board, wnd.kbd, apple, dt, obstacles);
+		sneks[i].update(board, wnd.kbd, apples, dt, obstacles, sneks);
 		if (sneks[i].deathCheck(obstacles, sneks)) {
 			gameOver = true;
 		}
@@ -73,9 +86,10 @@ void Game::UpdateModel() {
 void Game::ComposeFrame() {
 	if (gameOver) return;
 	board.drawBorder();
-	apple.draw(board);
-	for (int i = 0; i < sneks.size(); ++i)
-		sneks[i].draw(board);
+	for (int i = 0; i < apples.size(); ++i)
+		apples[i].draw(board);
 	for (int i = 0; i < obstacles.size(); i++)
 		obstacles[i].draw(board);
+	for (int i = 0; i < sneks.size(); ++i)
+		sneks[i].draw(board);
 }

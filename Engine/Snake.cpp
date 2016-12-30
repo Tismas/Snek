@@ -27,20 +27,29 @@ Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color 
 	}
 	this->x = (float)x;
 	this->y = (float)y;
-	speed = 3.5f;
 
 	for (int i = 0; i < 4; i++) {
 		this->controls[i] = controls[i];
 	}
 
 	bodyColors[0] = BaseColor;
-	bodyColors[1] = {(unsigned char)(BaseColor.GetR()*0.7), (unsigned char)(BaseColor.GetG()*0.7) , (unsigned char)(BaseColor.GetB()*0.7) };
+	bodyColors[1] = { (unsigned char)(BaseColor.GetR()*0.7), (unsigned char)(BaseColor.GetG()*0.7) , (unsigned char)(BaseColor.GetB()*0.7) };
 }
 
 Snake::~Snake() {
 }
 
-void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float dt, std::vector<Obstacle>& obstacles) {
+void Snake::update(const Board& board, const Keyboard& kbd, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks) {
+	if (accelerated) {
+		auto now = std::chrono::steady_clock::now();
+		std::chrono::duration<float> duration = now - accelerationTime;
+		if (duration.count() >= 10.0f) {
+			accelerated = false;
+			speed -= accelerationValue;
+		}
+	}
+
+
 	int lastX = (int)x, lastY = (int)y;
 
 	if (dir == left) x -= speed * dt;
@@ -93,10 +102,32 @@ void Snake::update(const Board& board, const Keyboard& kbd, Apple& apple, float 
 			dir = pending;
 			pending = none;
 		}
-		if (apple.x == (int)x && apple.y == (int)y) {
-			apple.reposition(board, obstacles);
-			speed += 0.1f;
-			if (segments.size() >= 10) {
+
+		bool eaten = false;
+		for (int i = 0; i < apples.size(); ++i) {
+			if (apples[i].x == (int)x && apples[i].y == (int)y) {
+				if (lastAppleEaten == apples[i].type) {
+					appleCombo++;
+					if (appleCombo == 3) {
+						apples[i].fireEffect(board, sneks, *this, obstacles, apples);
+						appleCombo = 0;
+					}
+				}
+				else {
+					appleCombo = 1;
+					lastAppleEaten = apples[i].type;
+				}
+
+				apples[i] = apples[apples.size() - 1];
+				apples.pop_back();
+
+				speed += 0.1f;
+				eaten = true;
+				break;
+			}
+		}
+		if (eaten) {
+			if (segments.size() >= 23) {
 				while (segments.size() >= 2) {
 					obstacles.push_back({ segments.back().x, segments.back().y });
 					segments.pop_back();
@@ -141,6 +172,22 @@ void Snake::reset(int x, int y) {
 	dir = up;
 	this->x = (float)x;
 	this->y = (float)y;
+}
+
+void Snake::accelerate() {
+	speed += accelerationValue;
+	accelerationTime = std::chrono::steady_clock::now();
+	accelerated = true;
+}
+
+bool Snake::isTooClose(const Apple & apple) const {
+	if (abs(apple.x - (int)x) <= 2 && abs(apple.y - (int)y) <= 2) return true;
+	else {
+		for (int i = 0; i < segments.size(); ++i) {
+			if (abs(segments[i].x - apple.x) <= 2 && abs(segments[i].y - apple.y) <= 2) return true;
+		}
+	}
+	return false;
 }
 
 void Snake::draw(Board& board) const {

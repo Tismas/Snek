@@ -45,15 +45,21 @@ private:
 	/*  User Functions              */
 	/********************************/
 private:
-	bool gameOver = false;
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	bool gameOver = false;
+
+	static constexpr int maxApples = 20;
+	static constexpr int minApples = 5;
+	std::chrono::steady_clock::time_point lastAppleSpawn;
+	
 	Board board;
 	std::vector<Snake> sneks;
 	std::vector<Obstacle> obstacles;
-	Apple apple;
+	std::vector<Apple> apples;
+	
 	float dt;
 	std::chrono::steady_clock::time_point last;
 	/********************************/
