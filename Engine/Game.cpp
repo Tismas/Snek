@@ -28,19 +28,32 @@ Game::Game(MainWindow& wnd)
 	board(gfx) 
 {
 	wnd.initPad();
+	init();
+}
+
+void Game::init() {
 	for (int i = 0; i < 5; i++) {
-		apples.push_back(Apple(board,sneks,obstacles));
+		apples.push_back(Apple(board, sneks, obstacles));
 	}
 	dt = 0;
 
 	last = std::chrono::steady_clock::now();
 	lastAppleSpawn = std::chrono::steady_clock::now();
-	
-	unsigned char controls[4][4] = { { VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT }, { 'W', 'D', 'S', 'A' } };
+
+	unsigned char controls[4][4] = { { VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT },{ 'W', 'D', 'S', 'A' } };
 	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, up, controls[0], { 20,200,20 }));
 	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, down, controls[1], { 200,20,20 }));
-	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }, true));
-	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, right, controls[3], { 20,200,200 }));
+	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }, true, 0));
+	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, right, controls[2], { 10,150,150 }, true, 1));
+	deadSneks.clear();
+}
+
+void Game::saveScores() {
+	scores.open("scores.txt", std::ios::ate | std::ios::app | std::ios::out);
+	for (int i = 0; i < deadSneks.size(); ++i)
+		scores << deadSneks[i].color << ": " << deadSneks[i].score << std::endl;
+	scores << std::endl;
+	scores.close();
 }
 
 void Game::Go() {
@@ -52,13 +65,20 @@ void Game::Go() {
 
 void Game::UpdateModel() {
 	wnd.pad.Frame();
-	wnd.pad.IsButtonPressed();
 	using namespace std::chrono;
 	auto mark = steady_clock::now();
 
 	std::chrono::duration<float> duration = mark - last;
 	dt = duration.count();
 	last = mark;
+	static int frames = 0;
+	if (frames > 60 && wnd.kbd.KeyIsPressed('P')) {
+		paused = !paused;
+		frames = 0;
+
+	}
+	frames++;
+	if (paused) return;
 
 	std::chrono::duration<float> timeSinceLastAppleSpawn = mark - lastAppleSpawn;
 	if (apples.size() < minApples || apples.size() < maxApples && timeSinceLastAppleSpawn.count() >= 5.0f) {
@@ -81,13 +101,18 @@ void Game::UpdateModel() {
 	for (int i = 0; i < sneks.size(); ++i) {
 		sneks[i].update(board, wnd.kbd, wnd.pad, apples, dt, obstacles, sneks);
 		if (sneks[i].deathCheck(obstacles, sneks)) {
-			gameOver = true;
+			deadSneks.push_back(sneks[i]);
+			sneks[i] = sneks[sneks.size() - 1];
+			sneks.pop_back();
+			if (sneks.size() == 0) {
+				saveScores();
+				init();
+			}
 		}
 	}
 }
 
 void Game::ComposeFrame() {
-	if (gameOver) return;
 	board.drawBorder();
 	for (int i = 0; i < apples.size(); ++i)
 		apples[i].draw(board);

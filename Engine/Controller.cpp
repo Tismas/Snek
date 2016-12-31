@@ -3,24 +3,25 @@
 
 
 Controller::Controller() {
-	state = { 0 };
+	for (int i = 0; i < MAX_PADS; ++i)
+		states[i] = { 0 };
 }
 
 
 Controller::~Controller() {
-	if (m_pad) {
-		m_pad->Unacquire();
-	}
+	Shutdown();
 }
 
 IDirectInput8* Controller::m_directInput = 0;
-IDirectInputDevice8* Controller::m_pad = 0;
+IDirectInputDevice8* Controller::m_pads[MAX_PADS] = { 0 };
+int Controller::padsNum = 0;
+
 BOOL CALLBACK
 Controller::enumCallback(const DIDEVICEINSTANCE* instance, VOID* context) {
 	HRESULT hr;
 
 	// Obtain an interface to the enumerated joystick.
-	hr = m_directInput->CreateDevice(instance->guidInstance, &m_pad, NULL);
+	hr = m_directInput->CreateDevice(instance->guidInstance, &m_pads[padsNum++], NULL);
 
 	// If it failed, then we can't use this joystick. (Maybe the user unplugged
 	// it while we were in the middle of enumerating it.)
@@ -30,7 +31,8 @@ Controller::enumCallback(const DIDEVICEINSTANCE* instance, VOID* context) {
 
 	// Stop enumeration. Note: we're just taking the first joystick we get. You
 	// could store all the enumerated joysticks and let the user pick.
-	return DIENUM_STOP;
+	// return DIENUM_STOP;
+	return DIENUM_CONTINUE;
 }
 
 bool Controller::Initialize(HINSTANCE hinstance, HWND hwnd) {
@@ -41,26 +43,26 @@ bool Controller::Initialize(HINSTANCE hinstance, HWND hwnd) {
 	result = m_directInput->EnumDevices(DI8DEVCLASS_GAMECTRL, enumCallback, NULL, DIEDFL_ATTACHEDONLY);
 	if (FAILED(result)) return false;
 
-	result = m_pad->SetDataFormat(&c_dfDIJoystick2);
-	if (FAILED(result)) return false;
+	for (int i = 0; i < padsNum; ++i) {
+		result = m_pads[i]->SetDataFormat(&c_dfDIJoystick2);
+		if (FAILED(result)) return false;
 
-	result = m_pad->SetCooperativeLevel(hwnd, DISCL_EXCLUSIVE | DISCL_FOREGROUND);
-	if (FAILED(result)) return false;
+		result = m_pads[i]->SetCooperativeLevel(hwnd, DISCL_EXCLUSIVE | DISCL_FOREGROUND);
+		if (FAILED(result)) return false;
 
-	result = m_pad->Acquire();
-	if (FAILED(result)) return false;
-
-	capabilities.dwSize = sizeof(DIDEVCAPS);
-	if (FAILED(m_pad->GetCapabilities(&capabilities))) return false;
-
+		result = m_pads[i]->Acquire();
+		if (FAILED(result)) return false;
+	}
 	return true;
 }
 
 void Controller::Shutdown() {
-	if (m_pad) {
-		m_pad->Unacquire();
-		m_pad->Release();
-		m_pad = 0;
+	for (int i = 0; i < padsNum; ++i) {
+		if (m_pads[i]) {
+			m_pads[i]->Unacquire();
+			m_pads[i]->Release();
+			m_pads[i] = 0;
+		}
 	}
 	if (m_directInput) {
 		m_directInput->Release();
@@ -81,21 +83,21 @@ bool Controller::IsButtonPressed() const {
 	return false;
 }
 
-int Controller::getVX() const {
-	if (state.lX - 32767 > 10000) {
+int Controller::getVX(int padInd) const {
+	if (states[padInd].lX - 32767 > 10000) {
 		return 1;
 	}
-	else if (state.lX - 32767 < -10000) {
+	else if (states[padInd].lX - 32767 < -10000) {
 		return -1;
 	}
 	return 0;
 }
 
-int Controller::getVY() const {
-	if (state.lY - 32767 > 10000) {
+int Controller::getVY(int padInd) const {
+	if (states[padInd].lY - 32767 > 10000) {
 		return 1;
 	}
-	else if (state.lY - 32767 < -10000) {
+	else if (states[padInd].lY - 32767 < -10000) {
 		return -1;
 	}
 	return 0;
@@ -104,15 +106,18 @@ int Controller::getVY() const {
 bool Controller::ReadInput() {
 	HRESULT result;
 
-	result = m_pad->Poll();
-	if (FAILED(result)) {
-		if ((result == DIERR_INPUTLOST) || (result == DIERR_NOTACQUIRED)) {
-			m_pad->Acquire();
+
+	for (int i = 0; i < padsNum; ++i) {
+		result = m_pads[i]->Poll();
+		if (FAILED(result)) {
+			if ((result == DIERR_INPUTLOST) || (result == DIERR_NOTACQUIRED)) {
+				m_pads[i]->Acquire();
+			}
+			else {
+				return false;
+			}
 		}
-		else {
-			return false;
-		}
+		if (FAILED(m_pads[i]->GetDeviceState(sizeof(DIJOYSTATE2), &states[i]))) return false;
 	}
-	if (FAILED(m_pad->GetDeviceState(sizeof(DIJOYSTATE2), &state))) return false;
 	return true;
 }

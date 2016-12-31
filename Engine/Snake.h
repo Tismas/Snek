@@ -31,9 +31,9 @@ class Snake {
 	direction pending = none;
 	unsigned char controls[4];
 	bool byPad;
+	int padInd;
 
 	int lifes = 3;
-	int score = 0;
 	float speed = 3.5f;
 	int lastAppleEaten = -1;
 	int appleCombo = 0;
@@ -43,7 +43,9 @@ class Snake {
 	std::chrono::steady_clock::time_point accelerationTime;
 
 public:
-	Snake(int x = 5, int y = 5, direction dir = up, const unsigned char controls[] = NULL, Color BaseColor = Colors::Green, bool controllerByPad = false);
+	std::string color;
+	int score = 0;
+	Snake(int x = 5, int y = 5, direction dir = up, const unsigned char controls[] = NULL, Color BaseColor = Colors::Green, bool controllerByPad = false, int padInd = 0);
 	~Snake();
 
 	void draw(Board& board) const;

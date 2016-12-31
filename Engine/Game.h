@@ -21,6 +21,7 @@
 #pragma once
 
 #include <chrono>
+#include <fstream>
 #include <vector>
 
 #include "Keyboard.h"
@@ -44,13 +45,17 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void init();
+	void saveScores();
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	std::ofstream scores;
 	bool gameOver = false;
+	bool paused = false;
 
 	static constexpr int maxApples = 20;
 	static constexpr int minApples = 5;
@@ -58,6 +63,7 @@ private:
 	
 	Board board;
 	std::vector<Snake> sneks;
+	std::vector<Snake> deadSneks;
 	std::vector<Obstacle> obstacles;
 	std::vector<Apple> apples;
 	

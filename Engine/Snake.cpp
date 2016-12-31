@@ -2,7 +2,12 @@
 
 
 
-Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color BaseColor, bool controlledByPad) : dir(dir), byPad(controlledByPad) {
+Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color BaseColor, bool controlledByPad, int padInd) : dir(dir), byPad(controlledByPad), padInd(padInd) {
+	if (BaseColor.GetR() >= 200) color = "Czerwony";
+	else if (BaseColor.GetG() >= 200) color = "Zielony";
+	else if (BaseColor.GetB() >= 200) color = "Niebieski";
+	else color = "Turkusowy";
+
 	if (dir == up) {
 		++x;
 		segments.push_back({ x, y + 1 });
@@ -64,7 +69,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 
 	bool moved = lastX != (int)x || lastY != (int)y;
 
-	if ((!byPad && kbd.KeyIsPressed(controls[0]) || byPad && pad.getVY() == -1) && dir != down) {
+	if ((!byPad && kbd.KeyIsPressed(controls[0]) || byPad && pad.getVY(padInd) == -1) && dir != down) {
 		if (segments[0].x == lastX || segments[0].x == (int)x)
 			pending = up;
 		else {
@@ -72,7 +77,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 			pending = none;
 		}
 	}
-	else if ((kbd.KeyIsPressed(controls[2]) || byPad && pad.getVY() == 1) && dir != up) {
+	else if ((kbd.KeyIsPressed(controls[2]) || byPad && pad.getVY(padInd) == 1) && dir != up) {
 		if (segments[0].x == lastX || segments[0].x == (int)x)
 			pending = down;
 		else {
@@ -80,7 +85,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 			pending = none;
 		}
 	}
-	if ((kbd.KeyIsPressed(controls[1]) || byPad && pad.getVX() == 1) && dir != left) {
+	if ((kbd.KeyIsPressed(controls[1]) || byPad && pad.getVX(padInd) == 1) && dir != left) {
 		if (segments[0].y == lastY || segments[0].y == (int)y)
 			pending = right;
 		else {
@@ -88,7 +93,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 			pending = none;
 		}
 	}
-	else if ((kbd.KeyIsPressed(controls[3]) || byPad && pad.getVX() == -1) && dir != right) {
+	else if ((kbd.KeyIsPressed(controls[3]) || byPad && pad.getVX(padInd) == -1) && dir != right) {
 		if (segments[0].y == lastY || segments[0].y == (int)y)
 			pending = left;
 		else {
@@ -111,10 +116,12 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 					if (appleCombo == 3) {
 						apples[i].fireEffect(board, sneks, *this, obstacles, apples);
 						appleCombo = 0;
+						score += 5;
 					}
 				}
 				else {
 					appleCombo = 1;
+					score++;
 					lastAppleEaten = apples[i].type;
 				}
 
