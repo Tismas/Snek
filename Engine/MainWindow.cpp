@@ -232,3 +232,7 @@ LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 
 	return DefWindowProc( hWnd,msg,wParam,lParam );
 }
+
+void MainWindow::initPad() {
+	pad.Initialize(hInst, hWnd);
+}

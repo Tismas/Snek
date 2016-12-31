@@ -2,7 +2,7 @@
 
 
 
-Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color BaseColor) : dir(dir) {
+Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color BaseColor, bool controlledByPad) : dir(dir), byPad(controlledByPad) {
 	if (dir == up) {
 		++x;
 		segments.push_back({ x, y + 1 });
@@ -39,7 +39,7 @@ Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color 
 Snake::~Snake() {
 }
 
-void Snake::update(const Board& board, const Keyboard& kbd, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks) {
+void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pad, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks) {
 	if (accelerated) {
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<float> duration = now - accelerationTime;
@@ -64,7 +64,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, std::vector<Apple>& 
 
 	bool moved = lastX != (int)x || lastY != (int)y;
 
-	if (kbd.KeyIsPressed(controls[0]) && dir != down) {
+	if ((!byPad && kbd.KeyIsPressed(controls[0]) || byPad && pad.getVY() == -1) && dir != down) {
 		if (segments[0].x == lastX || segments[0].x == (int)x)
 			pending = up;
 		else {
@@ -72,7 +72,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, std::vector<Apple>& 
 			pending = none;
 		}
 	}
-	else if (kbd.KeyIsPressed(controls[2]) && dir != up) {
+	else if ((kbd.KeyIsPressed(controls[2]) || byPad && pad.getVY() == 1) && dir != up) {
 		if (segments[0].x == lastX || segments[0].x == (int)x)
 			pending = down;
 		else {
@@ -80,7 +80,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, std::vector<Apple>& 
 			pending = none;
 		}
 	}
-	if (kbd.KeyIsPressed(controls[1]) && dir != left) {
+	if ((kbd.KeyIsPressed(controls[1]) || byPad && pad.getVX() == 1) && dir != left) {
 		if (segments[0].y == lastY || segments[0].y == (int)y)
 			pending = right;
 		else {
@@ -88,7 +88,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, std::vector<Apple>& 
 			pending = none;
 		}
 	}
-	else if (kbd.KeyIsPressed(controls[3]) && dir != right) {
+	else if ((kbd.KeyIsPressed(controls[3]) || byPad && pad.getVX() == -1) && dir != right) {
 		if (segments[0].y == lastY || segments[0].y == (int)y)
 			pending = left;
 		else {

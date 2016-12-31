@@ -25,6 +25,7 @@
 
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Controller.h"
 #include "Graphics.h"
 #include "Board.h"
 #include "Snake.h"

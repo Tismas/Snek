@@ -27,6 +27,7 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	board(gfx) 
 {
+	wnd.initPad();
 	for (int i = 0; i < 5; i++) {
 		apples.push_back(Apple(board,sneks,obstacles));
 	}
@@ -38,7 +39,7 @@ Game::Game(MainWindow& wnd)
 	unsigned char controls[4][4] = { { VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT }, { 'W', 'D', 'S', 'A' } };
 	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, up, controls[0], { 20,200,20 }));
 	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, down, controls[1], { 200,20,20 }));
-	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }));
+	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }, true));
 	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, right, controls[3], { 20,200,200 }));
 }
 
@@ -50,6 +51,8 @@ void Game::Go() {
 }
 
 void Game::UpdateModel() {
+	wnd.pad.Frame();
+	wnd.pad.IsButtonPressed();
 	using namespace std::chrono;
 	auto mark = steady_clock::now();
 
@@ -76,7 +79,7 @@ void Game::UpdateModel() {
 	if (gameOver) return;
 
 	for (int i = 0; i < sneks.size(); ++i) {
-		sneks[i].update(board, wnd.kbd, apples, dt, obstacles, sneks);
+		sneks[i].update(board, wnd.kbd, wnd.pad, apples, dt, obstacles, sneks);
 		if (sneks[i].deathCheck(obstacles, sneks)) {
 			gameOver = true;
 		}

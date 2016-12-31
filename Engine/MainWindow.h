@@ -23,6 +23,7 @@
 #include "Graphics.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Controller.h"
 #include "ChiliException.h"
 #include <string>
 
@@ -72,8 +73,10 @@ private:
 	static LRESULT WINAPI _HandleMsgThunk( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam );
 	LRESULT HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam );
 public:
+	void initPad();
 	Keyboard kbd;
 	Mouse mouse;
+	Controller pad;
 private:
 	static constexpr wchar_t* wndClassName = L"Chili DirectX Framework Window";
 	HINSTANCE hInst = nullptr;
