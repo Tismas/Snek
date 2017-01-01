@@ -27,7 +27,7 @@ void Board::drawCircle(int x0, int y0, Color c) {
 }
 
 void Board::drawImage(Image& img, int x0, int y0) {
-	img.draw(gfx, offsetX + x0*cellSize, offsetY + y0*cellSize, cellSize, cellSize);
+	img.draw(gfx, offsetX + x0*cellSize, offsetY + y0*cellSize);
 }
 
 void Board::drawBorder() {

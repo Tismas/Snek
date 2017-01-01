@@ -13,6 +13,29 @@ Image::~Image() {
 	pixels = NULL;
 }
 
+void Image::resample(int newWidth, int newHeight) {
+	if (pixels == NULL) return;
+
+	Color* newData = new Color[newWidth * newHeight];
+
+	double scaleWidth = (double)newWidth / (double)width;
+	double scaleHeight = (double)newHeight / (double)height;
+
+	for (int cy = 0; cy < newHeight; cy++) {
+		for (int cx = 0; cx < newWidth; cx++) {
+			int pixel = cy * newWidth + cx;
+			int nearestMatch = ((int)(cy / scaleHeight) * width + (int)(cx / scaleWidth));
+
+			newData[pixel] = pixels[nearestMatch];
+		}
+	}
+
+	delete[] pixels;
+	pixels = newData;
+	width = newWidth;
+	height = newHeight;
+}
+
 void Image::loadBmp32(const std::string& filename) {
 	std::ifstream img(filename, std::ios::binary);
 	int offset;
@@ -24,7 +47,7 @@ void Image::loadBmp32(const std::string& filename) {
 	img.read((char*)&height, 4);
 
 	pixels = new Color[height*width];
-	memset(pixels, 0, width*height * sizeof(int8_t));
+	memset(pixels, 0, width*height*sizeof(Color));
 
 	img.seekg(offset, std::ios::beg);
 	for (int i = 0; i < height; ++i) {
@@ -44,7 +67,7 @@ void Image::loadBmp32(const std::string& filename) {
 }
 
 // TODO: Dodac obsluge rysowania na inna wysokosc/szerokosc
-void Image::draw(Graphics & gfx, int x, int y, int destWidth, int destHeight) {
+void Image::draw(Graphics & gfx, int x, int y) {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			Color& pixel = pixels[i*width + j];

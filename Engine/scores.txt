@@ -371,3 +371,9 @@ Zielony: 38
 Niebieski: 10
 Turkusowy: 1
 
+Zielony: 38
+Czerwony: 15
+
+Zielony: 60
+Czerwony: 11
+

@@ -12,8 +12,9 @@ public:
 	Image();
 	~Image();
 
+	void resample(int newWidth, int newHeight);
 	void loadBmp32(const std::string& filename);
 
-	void draw(Graphics& gfx, int x,int y, int width, int height);
+	void draw(Graphics& gfx, int x,int y);
 };
 

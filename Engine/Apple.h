@@ -24,6 +24,7 @@ class Apple {
 	static bool initialized;
 	static std::vector<Image> appleImages;
 	void initType();
+	void initImages();
 public:
 	Apple(int x, int y);
 	Apple(const Board& board, const std::vector<Snake>& sneks, const std::vector<Obstacle>& obstacles);

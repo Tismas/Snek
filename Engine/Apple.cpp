@@ -13,17 +13,21 @@ void Apple::initType() {
 	type = typeDist(rng);
 }
 
+void Apple::initImages() {
+	for (int i = 0; i < COLORS_COUNT; ++i)
+		appleImages.push_back(Image());
+
+	appleImages[violet].loadBmp32("./Assets/violet.bmp");
+	appleImages[orange].loadBmp32("./Assets/orange.bmp");
+	appleImages[blue].loadBmp32("./Assets/blue.bmp");
+	appleImages[green].loadBmp32("./Assets/green.bmp");
+	appleImages[yellow].loadBmp32("./Assets/yellow.bmp");
+	appleImages[red].loadBmp32("./Assets/red.bmp");
+}
+
 Apple::Apple(int x, int y) : x(x), y(y) {
 	if (!initialized) {
-		for (int i = 0; i < COLORS_COUNT; ++i)
-			appleImages.push_back(Image());
-
-		appleImages[violet].loadBmp32("./Assets/violet.bmp");
-		appleImages[orange].loadBmp32("./Assets/orange.bmp");
-		appleImages[blue].loadBmp32("./Assets/blue.bmp");
-		appleImages[green].loadBmp32("./Assets/green.bmp");
-		appleImages[yellow].loadBmp32("./Assets/yellow.bmp");
-		appleImages[red].loadBmp32("./Assets/red.bmp");
+		initImages();
 		initialized = true;
 	}
 	initType();
@@ -31,15 +35,7 @@ Apple::Apple(int x, int y) : x(x), y(y) {
 
 Apple::Apple(const Board& board, const std::vector<Snake>& sneks, const std::vector<Obstacle>& obstacles) {
 	if (!initialized) {
-		for (int i = 0; i < COLORS_COUNT; ++i)
-			appleImages.push_back(Image());
-
-		appleImages[violet].loadBmp32("./Assets/violet.bmp");
-		appleImages[orange].loadBmp32("./Assets/orange.bmp");
-		appleImages[blue].loadBmp32("./Assets/blue.bmp");
-		appleImages[green].loadBmp32("./Assets/green.bmp");
-		appleImages[yellow].loadBmp32("./Assets/yellow.bmp");
-		appleImages[red].loadBmp32("./Assets/red.bmp");
+		initImages();
 		initialized = true;
 	}
 	reposition(board, sneks, obstacles);
