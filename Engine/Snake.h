@@ -34,7 +34,7 @@ class Snake {
 	int padInd;
 
 	int lifes = 3;
-	float speed = 3.5f;
+	float speed = 3.0f;
 	int lastAppleEaten = -1;
 	int appleCombo = 0;
 
@@ -50,7 +50,7 @@ public:
 
 	void draw(Board& board) const;
 	void update(const Board& board, const Keyboard& kbd, const Controller& pad, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks);
-	bool deathCheck(const std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks) const;
+	bool deathCheck(const std::vector<Obstacle>& obstacles, std::vector<Snake>& sneks);
 	void reset(int x, int y);
 	void accelerate();
 

@@ -1,0 +1,373 @@
+Czerwony: 9
+Zielony: 18
+
+Czerwony: 30
+Zielony: 47
+
+Zielony: 35
+Czerwony: 49
+
+Czerwony: 0
+Zielony: 2
+
+Czerwony: 9
+Niebieski: 14
+Turkusowy: 29
+Zielony: 48
+
+Niebieski: 12
+Zielony: 20
+Turkusowy: 31
+Czerwony: 34
+
+Turkusowy: 13
+Niebieski: 12
+Zielony: 27
+Czerwony: 45
+
+Zielony: 22
+Czerwony: 14
+Turkusowy: 10
+Niebieski: 1
+
+Zielony: 44
+Czerwony: 35
+Niebieski: 11
+Turkusowy: 0
+
+Zielony: 11
+Czerwony: 8
+Turkusowy: 1
+Niebieski: 0
+
+Zielony: 18
+Czerwony: 0
+
+Czerwony: 9
+Niebieski: 2
+Zielony: 1
+
+Czerwony: 29
+Niebieski: 27
+Zielony: 19
+
+21:16
+Zielony: 37
+Czerwony: 31
+Niebieski: 0
+
+Czerwony: 27
+Zielony: 3
+Niebieski: 0
+
+Zielony: 23
+Czerwony: 9
+Niebieski: 0
+
+Czerwony: 21
+Zielony: 1
+Niebieski: 0
+
+Zielony: 34
+Czerwony: 28
+Niebieski: 0
+
+Czerwony: 39
+Zielony: 34
+Niebieski: 0
+
+Czerwony: 31
+Zielony: 15
+Niebieski: 0
+
+Czerwony: 21
+Niebieski: 1
+Zielony: 0
+
+Zielony: 26
+Czerwony: 12
+Niebieski: 0
+
+Zielony: 39
+Czerwony: 14
+Niebieski: 0
+
+Zielony: 21
+Niebieski: 5
+Czerwony: 4
+
+Czerwony: 30
+Zielony: 28
+Niebieski: 11
+
+Czerwony: 32
+Zielony: 19
+Niebieski: 1
+
+Czerwony: 55
+Zielony: 23
+Niebieski: 0
+
+Zielony: 34
+Czerwony: 13
+Niebieski: 0
+
+Zielony: 19
+Niebieski: 5
+Czerwony: 3
+
+Zielony: 29
+Czerwony: 17
+Niebieski: 0
+
+Czerwony: 22
+Zielony: 9
+Niebieski: 0
+
+Czerwony: 29
+Zielony: 13
+Niebieski: 0
+
+Zielony: 31
+Czerwony: 26
+Niebieski: 1
+
+Niebieski: 41
+Zielony: 38
+Czerwony: 28
+
+Czerwony: 57
+Zielony: 18
+Niebieski: 17
+
+Czerwony: 31
+Niebieski: 3
+Zielony: 0
+
+Czerwony: 25
+Zielony: 1
+Niebieski: 0
+
+Czerwony: 23
+Zielony: 9
+Niebieski: 0
+
+Czerwony: 29
+Niebieski: 1
+Zielony: 0
+
+Czerwony: 39
+Zielony: 11
+Niebieski: 1
+
+Zielony: 29
+Czerwony: 22
+Niebieski: 0
+
+Zielony: 28
+Czerwony: 15
+Niebieski: 0
+
+Zielony: 21
+Czerwony: 12
+Niebieski: 6
+
+Zielony: 42
+Czerwony: 30
+Niebieski: 0
+
+Zielony: 11
+Czerwony: 3
+Niebieski: 1
+
+Niebieski: 32
+Czerwony: 31
+Zielony: 0
+
+Czerwony: 27
+Zielony: 4
+Niebieski: 0
+
+Zielony: 42
+Czerwony: 23
+Niebieski: 1
+
+Czerwony: 27
+Zielony: 3
+Niebieski: 0
+
+Czerwony: 29
+Niebieski: 8
+Zielony: 0
+
+Czerwony: 22
+Zielony: 5
+Niebieski: 1
+
+Czerwony: 26
+Zielony: 6
+Niebieski: 1
+
+Czerwony: 61
+Zielony: 33
+
+Czerwony: 21
+Zielony: 19
+
+Czerwony: 15
+Zielony: 0
+
+Czerwony: 15
+Zielony: 8
+
+Czerwony: 36
+Zielony: 18
+
+Czerwony: 34
+Zielony: 30
+
+Czerwony: 15
+Zielony: 0
+
+Czerwony: 68
+Zielony: 18
+
+Czerwony: 20
+Zielony: 5
+
+Czerwony: 36
+Zielony: 2
+
+Czerwony: 62
+Zielony: 9
+
+Czerwony: 15
+Zielony: 0
+
+Zielony: 34
+Czerwony: 23
+
+Czerwony: 49
+Zielony: 35
+
+Czerwony: 15
+Zielony: 0
+
+Czerwony: 24
+Zielony: 11
+
+Czerwony: 15
+Zielony: 0
+
+Czerwony: 25
+Zielony: 1
+
+Czerwony: 16
+Zielony: 0
+
+Czerwony: 54
+Zielony: 21
+
+Czerwony: 22
+Zielony: 0
+
+Czerwony: 43
+Zielony: 30
+
+Czerwony: 33
+Zielony: 12
+
+Czerwony: 26
+Zielony: 2
+
+Czerwony: 36
+Zielony: 10
+
+Czerwony: 63
+Zielony: 29
+
+Zielony: 44
+Czerwony: 41
+
+Czerwony: 15
+Zielony: 0
+
+Czerwony: 37
+Zielony: 27
+
+Zielony: 46
+Czerwony: 14
+
+Zielony: 15
+Czerwony: 9
+
+Zielony: 37
+Turkusowy: 25
+Czerwony: 20
+Niebieski: 14
+
+Zielony: 46
+Czerwony: 38
+Turkusowy: 8
+Niebieski: 0
+
+Turkusowy: 19
+Zielony: 18
+Czerwony: 6
+Niebieski: 2
+
+Czerwony: 55
+Zielony: 46
+Niebieski: 27
+Turkusowy: 6
+
+Zielony: 37
+Czerwony: 16
+Niebieski: 6
+Turkusowy: 1
+
+Zielony: 50
+Czerwony: 20
+Niebieski: 10
+Turkusowy: 1
+
+Czerwony: 52
+Zielony: 34
+Niebieski: 27
+Turkusowy: 5
+
+Zielony: 66
+Czerwony: 46
+Niebieski: 17
+Turkusowy: 2
+
+Czerwony: 38
+Turkusowy: 25
+Niebieski: 1
+Zielony: 0
+
+Czerwony: 68
+Turkusowy: 36
+Zielony: 13
+Niebieski: 8
+
+Czerwony: 51
+Zielony: 21
+Niebieski: 6
+Turkusowy: 0
+
+Turkusowy: 31
+Zielony: 14
+Niebieski: 5
+Czerwony: 3
+
+Zielony: 54
+Czerwony: 34
+Turkusowy: 17
+Niebieski: 2
+
+Czerwony: 62
+Zielony: 38
+Niebieski: 10
+Turkusowy: 1
+

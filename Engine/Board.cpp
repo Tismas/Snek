@@ -26,6 +26,10 @@ void Board::drawCircle(int x0, int y0, Color c) {
 	gfx.DrawCircle(offsetX + x0*cellSize + cellSize/2, offsetY + y0*cellSize + cellSize/2, cellSize/2, c);
 }
 
+void Board::drawImage(Image& img, int x0, int y0) {
+	img.draw(gfx, offsetX + x0*cellSize, offsetY + y0*cellSize, cellSize, cellSize);
+}
+
 void Board::drawBorder() {
 	for (int y = 0; y < height*cellSize; ++y) {
 		gfx.PutPixel(offsetX - 1, offsetY + y, borderColor);

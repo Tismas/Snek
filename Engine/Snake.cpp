@@ -128,7 +128,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 				apples[i] = apples[apples.size() - 1];
 				apples.pop_back();
 
-				speed += 0.1f;
+				speed += 0.2f;
 				eaten = true;
 				break;
 			}
@@ -147,20 +147,26 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 	}
 }
 
-bool Snake::deathCheck(const std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks) const {
+bool Snake::deathCheck(const std::vector<Obstacle>& obstacles, std::vector<Snake>& sneks) {
 	for (int i = 0; i < sneks.size(); ++i) {
 		if (this == &sneks[i]) continue;
 		Segment head = { (int)x, (int)y };
 		for (int j = 0; j < sneks[i].segments.size(); j++) {
-			if (head == sneks[i].segments[j]) return true;
+			if (head == sneks[i].segments[j]) {
+				sneks[i].score += 5;
+				return true;
+			}
 		}
 	}
 
+	// umieranie wbijajac sie w siebie
 	for (int i = 0; i < segments.size(); i++) {
 		if (segments[i] == Segment((int)x, (int)y)) return true;
 		for (int j = i + 1; j < segments.size(); j++) {
-			if (segments[i] == segments[j])
+			if (segments[i] == segments[j]) {
+				score -= 5;
 				return true;
+			}
 		}
 	}
 

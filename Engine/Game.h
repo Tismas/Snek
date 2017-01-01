@@ -24,6 +24,7 @@
 #include <fstream>
 #include <vector>
 
+#include "Image.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Controller.h"

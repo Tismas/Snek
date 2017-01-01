@@ -4,6 +4,7 @@
 
 #include "Colors.h"
 #include "Graphics.h"
+#include "Image.h"
 
 class Board {
 	const int width, height, cellSize, offsetX, offsetY;
@@ -15,6 +16,7 @@ public:
 
 	void drawCell(int x, int y, Color c);
 	void drawCircle(int x, int y, Color c);
+	void drawImage(Image& img, int x, int y);
 	void drawBorder();
 
 	inline int getWidth() const { return width; }

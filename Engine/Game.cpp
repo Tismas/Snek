@@ -25,7 +25,7 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	board(gfx) 
+	board(gfx)
 {
 	wnd.initPad();
 	init();
@@ -46,10 +46,12 @@ void Game::init() {
 	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }, true, 0));
 	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, right, controls[2], { 10,150,150 }, true, 1));
 	deadSneks.clear();
+	obstacles.clear();
 }
 
 void Game::saveScores() {
 	scores.open("scores.txt", std::ios::ate | std::ios::app | std::ios::out);
+	sort(deadSneks.begin(), deadSneks.end(), [](const Snake& first, const Snake& second) {return first.score > second.score; });
 	for (int i = 0; i < deadSneks.size(); ++i)
 		scores << deadSneks[i].color << ": " << deadSneks[i].score << std::endl;
 	scores << std::endl;
@@ -104,7 +106,10 @@ void Game::UpdateModel() {
 			deadSneks.push_back(sneks[i]);
 			sneks[i] = sneks[sneks.size() - 1];
 			sneks.pop_back();
-			if (sneks.size() == 0) {
+			if (sneks.size() == 1) {
+				sneks[0].score += 10;
+				deadSneks.push_back(sneks[0]);
+				sneks.pop_back();
 				saveScores();
 				init();
 			}

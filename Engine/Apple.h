@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Image.h"
 #include "Board.h"
 #include "Colors.h"
 #include "Obstacle.h"
@@ -7,6 +8,7 @@
 
 class Snake;
 
+#define COLORS_COUNT 6
 enum types {
 	violet,
 	orange,
@@ -19,7 +21,8 @@ enum types {
 class Apple {
 	int x, y;
 	int type;
-	static std::vector<Color> colors;
+	static bool initialized;
+	static std::vector<Image> appleImages;
 	void initType();
 public:
 	Apple(int x, int y);
