@@ -37,6 +37,8 @@ void Image::resample(int newWidth, int newHeight) {
 }
 
 void Image::loadBmp32(const std::string& filename) {
+	unload();
+
 	loaded = true;
 	std::ifstream img(filename, std::ios::binary);
 	int offset;
@@ -65,6 +67,14 @@ void Image::loadBmp32(const std::string& filename) {
 			pixel.SetA(a);
 		}
 	}
+}
+
+void Image::unload() {
+	delete[] pixels;
+	pixels = NULL;
+	loaded = false;
+	width = 0;
+	height = 0;
 }
 
 void Image::draw(Graphics & gfx, int x, int y) {

@@ -34,6 +34,7 @@
 #include "Apple.h"
 #include "Obstacle.h"
 #include "Projectile.h"
+#include "UICombo.h"
 
 class Game
 {
@@ -69,6 +70,7 @@ private:
 	std::vector<Obstacle> obstacles;
 	std::vector<Apple> apples;
 	std::vector<Projectile> projectiles;
+	std::vector<UICombo> comboCounters;
 	
 	float dt;
 	std::chrono::steady_clock::time_point last;

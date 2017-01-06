@@ -16,6 +16,7 @@ public:
 
 	void resample(int newWidth, int newHeight);
 	void loadBmp32(const std::string& filename);
+	void unload();
 
 	void draw(Graphics& gfx, int x,int y);
 	void draw(Graphics & gfx, int x, int y, int x0, int y0, int w, int h);

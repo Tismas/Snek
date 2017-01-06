@@ -56,6 +56,9 @@ public:
 
 	bool isTooClose(const Apple& apple) const;
 
+	inline int getComboCounter() const { return appleCombo; }
+	inline int getLastAppleEaten() const { return lastAppleEaten; }
+
 	friend class Apple;
 };
 

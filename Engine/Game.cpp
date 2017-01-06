@@ -47,6 +47,9 @@ void Game::init() {
 	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }, true, 0));
 	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, right, controls[2], { 10,150,150 }, true, 1));
 
+	for (int i = 0; i < sneks.size(); ++i) {
+		comboCounters.push_back(UICombo(sneks[i], i));
+	}
 	for (int i = 0; i < 5; i++) {
 		apples.push_back(Apple(board, sneks, obstacles));
 	}
@@ -136,4 +139,7 @@ void Game::ComposeFrame() {
 		projectiles[i].draw(gfx);
 	for (int i = 0; i < sneks.size(); ++i)
 		sneks[i].draw(board);
+	for (int i = 0; i < comboCounters.size(); ++i) {
+		comboCounters[i].draw(gfx);
+	}
 }
