@@ -33,6 +33,7 @@
 #include "Snake.h"
 #include "Apple.h"
 #include "Obstacle.h"
+#include "Projectile.h"
 
 class Game
 {
@@ -67,6 +68,7 @@ private:
 	std::vector<Snake> deadSneks;
 	std::vector<Obstacle> obstacles;
 	std::vector<Apple> apples;
+	std::vector<Projectile> projectiles;
 	
 	float dt;
 	std::chrono::steady_clock::time_point last;

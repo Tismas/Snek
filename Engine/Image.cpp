@@ -37,6 +37,7 @@ void Image::resample(int newWidth, int newHeight) {
 }
 
 void Image::loadBmp32(const std::string& filename) {
+	loaded = true;
 	std::ifstream img(filename, std::ios::binary);
 	int offset;
 	img.seekg(10, std::ios::beg);
@@ -66,13 +67,22 @@ void Image::loadBmp32(const std::string& filename) {
 	}
 }
 
-// TODO: Dodac obsluge rysowania na inna wysokosc/szerokosc
 void Image::draw(Graphics & gfx, int x, int y) {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			Color& pixel = pixels[i*width + j];
 			if (pixel.GetA() != 0)
 				gfx.PutPixel(x+j, y+i, pixel);
+		}
+	}
+}
+
+void Image::draw(Graphics & gfx, int x, int y, int x0, int y0, int w, int h) {
+	for (int i = y0; i < y0+h; ++i) {
+		for (int j = x0; j < x0+w; ++j) {
+			Color& pixel = pixels[i*width + j];
+			if (pixel.GetA() != 0)
+				gfx.PutPixel(x + j, y + i, pixel);
 		}
 	}
 }

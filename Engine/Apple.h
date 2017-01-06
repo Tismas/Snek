@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Colors.h"
 #include "Obstacle.h"
+#include "Projectile.h"
 #include <vector>
 
 class Snake;
@@ -33,7 +34,7 @@ public:
 	void draw(Board& board) const;
 	void setPos(int x, int y);
 	void reposition(const Board& board, const std::vector<Snake>& sneks, const std::vector<Obstacle>& obstacles);
-	void fireEffect(const Board& board, const std::vector<Snake>& sneks, Snake& snek, std::vector<Obstacle>& obstacles, std::vector<Apple>& apples);
+	void fireEffect(const Board& board, const std::vector<Snake>& sneks, Snake& snek, std::vector<Obstacle>& obstacles, std::vector<Apple>& apples, std::vector<Projectile>& projectiles);
 
 	friend class Snake;
 };

@@ -7,8 +7,10 @@
 
 class Image {
 	Color* pixels;
-	int width, height;
 public:
+	int width, height;
+	bool loaded = false;
+
 	Image();
 	~Image();
 
@@ -16,5 +18,6 @@ public:
 	void loadBmp32(const std::string& filename);
 
 	void draw(Graphics& gfx, int x,int y);
+	void draw(Graphics & gfx, int x, int y, int x0, int y0, int w, int h);
 };
 

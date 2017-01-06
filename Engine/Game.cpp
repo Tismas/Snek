@@ -32,9 +32,10 @@ Game::Game(MainWindow& wnd)
 }
 
 void Game::init() {
-	for (int i = 0; i < 5; i++) {
-		apples.push_back(Apple(board, sneks, obstacles));
-	}
+	apples.clear();
+	deadSneks.clear();
+	obstacles.clear();
+	sneks.clear();
 	dt = 0;
 
 	last = std::chrono::steady_clock::now();
@@ -45,8 +46,10 @@ void Game::init() {
 	sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, down, controls[1], { 200,20,20 }));
 	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, left, controls[2], { 20,20,200 }, true, 0));
 	// sneks.push_back(Snake(board.getWidth() / 2, board.getHeight() / 2, right, controls[2], { 10,150,150 }, true, 1));
-	deadSneks.clear();
-	obstacles.clear();
+
+	for (int i = 0; i < 5; i++) {
+		apples.push_back(Apple(board, sneks, obstacles));
+	}
 }
 
 void Game::saveScores() {
@@ -100,8 +103,14 @@ void Game::UpdateModel() {
 
 	if (gameOver) return;
 
+	for (int i = 0; i < projectiles.size(); ++i) {
+		if (projectiles[i].update(obstacles, apples, board) || projectiles[i].shouldBeDeleted(board)) {
+			projectiles[i] = projectiles[projectiles.size() - 1];
+			projectiles.pop_back();
+		}
+	}
 	for (int i = 0; i < sneks.size(); ++i) {
-		sneks[i].update(board, wnd.kbd, wnd.pad, apples, dt, obstacles, sneks);
+		sneks[i].update(board, wnd.kbd, wnd.pad, apples, dt, obstacles, sneks, projectiles);
 		if (sneks[i].deathCheck(obstacles, sneks)) {
 			deadSneks.push_back(sneks[i]);
 			sneks[i] = sneks[sneks.size() - 1];
@@ -123,6 +132,8 @@ void Game::ComposeFrame() {
 		apples[i].draw(board);
 	for (int i = 0; i < obstacles.size(); i++)
 		obstacles[i].draw(board);
+	for (int i = 0; i < projectiles.size(); ++i)
+		projectiles[i].draw(gfx);
 	for (int i = 0; i < sneks.size(); ++i)
 		sneks[i].draw(board);
 }

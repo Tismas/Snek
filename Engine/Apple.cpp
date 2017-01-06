@@ -82,7 +82,7 @@ void Apple::reposition(const Board& board, const std::vector<Snake>& sneks, cons
 	initType();
 }
 
-void Apple::fireEffect(const Board& board, const std::vector<Snake>& sneks, Snake & snek, std::vector<Obstacle>& obstacles, std::vector<Apple>& apples) {
+void Apple::fireEffect(const Board& board, const std::vector<Snake>& sneks, Snake & snek, std::vector<Obstacle>& obstacles, std::vector<Apple>& apples, std::vector<Projectile>& projectiles) {
 	if (type == violet) {
 		if (obstacles.size()) {
 			for (int i = 0; i < 5; ++i) {
@@ -92,6 +92,7 @@ void Apple::fireEffect(const Board& board, const std::vector<Snake>& sneks, Snak
 		}
 	}
 	else if (type == orange) {
+		projectiles.push_back(Projectile(board.getOffsetX() + (int)snek.x*board.getCellSize(), board.getOffsetY() + (int)snek.y*board.getCellSize(), snek.dir));
 	}
 	else if (type == blue) {
 		// deszcz
@@ -101,7 +102,7 @@ void Apple::fireEffect(const Board& board, const std::vector<Snake>& sneks, Snak
 			apples.push_back(Apple(board, sneks, obstacles));
 	}
 	else if (type == yellow) {
-		for (int i = 0; i < 3 && snek.segments.size(); ++i) {
+		for (int i = 0; i < 5 && snek.segments.size() > 2; ++i) {
 			snek.segments.pop_back();
 		}
 	}

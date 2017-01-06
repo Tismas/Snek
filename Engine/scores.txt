@@ -377,3 +377,60 @@ Czerwony: 15
 Zielony: 60
 Czerwony: 11
 
+Zielony: 24
+Czerwony: 13
+
+Czerwony: 49
+Zielony: 23
+
+Czerwony: 67
+Zielony: 33
+
+Zielony: 64
+Czerwony: 13
+
+Zielony: 127
+Czerwony: 12
+
+Zielony: 15
+Czerwony: 0
+
+Zielony: 63
+Czerwony: 11
+
+Zielony: 69
+Czerwony: 19
+
+Zielony: 14
+Czerwony: 13
+
+Zielony: 48
+Czerwony: 33
+
+Zielony: 19
+Czerwony: 5
+
+Czerwony: 44
+Zielony: 39
+
+Zielony: 48
+Czerwony: 47
+
+Zielony: 119
+Czerwony: 108
+
+Czerwony: 17
+Zielony: 3
+
+Zielony: 41
+Czerwony: 0
+
+Zielony: 25
+Czerwony: 0
+
+Czerwony: 10
+Zielony: 3
+
+Zielony: 162
+Czerwony: 11
+

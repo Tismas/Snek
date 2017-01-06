@@ -21,5 +21,8 @@ public:
 
 	inline int getWidth() const { return width; }
 	inline int getHeight() const { return height; }
+	inline int getOffsetX() const { return offsetX; }
+	inline int getOffsetY() const { return offsetY; }
+	inline int getCellSize() const { return cellSize; }
 };
 
