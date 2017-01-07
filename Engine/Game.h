@@ -60,6 +60,9 @@ private:
 	bool gameOver = false;
 	bool paused = false;
 
+	bool raining = false;
+	std::chrono::steady_clock::time_point rainStart;
+
 	static constexpr int maxApples = 20;
 	static constexpr int minApples = 5;
 	std::chrono::steady_clock::time_point lastAppleSpawn;

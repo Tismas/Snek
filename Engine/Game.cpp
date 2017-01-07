@@ -37,6 +37,7 @@ void Game::init() {
 	obstacles.clear();
 	sneks.clear();
 	dt = 0;
+	raining = false;
 
 	last = std::chrono::steady_clock::now();
 	lastAppleSpawn = std::chrono::steady_clock::now();
@@ -83,15 +84,22 @@ void Game::UpdateModel() {
 	if (frames > 60 && wnd.kbd.KeyIsPressed('P')) {
 		paused = !paused;
 		frames = 0;
-
 	}
 	frames++;
 	if (paused) return;
 
-	std::chrono::duration<float> timeSinceLastAppleSpawn = mark - lastAppleSpawn;
-	if (apples.size() < minApples || apples.size() < maxApples && timeSinceLastAppleSpawn.count() >= 5.0f) {
-		apples.push_back(Apple(board, sneks, obstacles));
-		lastAppleSpawn = mark;
+	if (apples.size() < maxApples) {
+		std::chrono::duration<float> timeSinceLastAppleSpawn = mark - lastAppleSpawn;
+		if (apples.size() < minApples || timeSinceLastAppleSpawn.count() >= 5.0f) {
+			apples.push_back(Apple(board, sneks, obstacles));
+			lastAppleSpawn = mark;
+		}
+	}
+
+	if (raining) {
+		std::chrono::duration<float> timeSinceRainStarted = mark - rainStart;
+		if(timeSinceRainStarted.count() > 30.0f)
+			raining = false;
 	}
 
 	if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
@@ -113,7 +121,7 @@ void Game::UpdateModel() {
 		}
 	}
 	for (int i = 0; i < sneks.size(); ++i) {
-		sneks[i].update(board, wnd.kbd, wnd.pad, apples, dt, obstacles, sneks, projectiles);
+		sneks[i].update(board, wnd.kbd, wnd.pad, apples, dt, obstacles, sneks, projectiles, raining, rainStart);
 		if (sneks[i].deathCheck(obstacles, sneks)) {
 			deadSneks.push_back(sneks[i]);
 			sneks[i] = sneks[sneks.size() - 1];
@@ -142,4 +150,6 @@ void Game::ComposeFrame() {
 	for (int i = 0; i < comboCounters.size(); ++i) {
 		comboCounters[i].draw(gfx);
 	}
+	if(raining)
+		gfx.addRainEffect(dt);
 }

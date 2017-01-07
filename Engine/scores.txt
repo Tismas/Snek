@@ -434,3 +434,9 @@ Zielony: 3
 Zielony: 162
 Czerwony: 11
 
+Zielony: 10
+Czerwony: 0
+
+Zielony: 34
+Czerwony: 1
+

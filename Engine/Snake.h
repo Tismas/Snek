@@ -1,6 +1,7 @@
 #pragma once
 
 #include <deque>
+#include <chrono>
 
 #include "Colors.h"
 #include "Board.h"
@@ -49,7 +50,7 @@ public:
 	~Snake();
 
 	void draw(Board& board) const;
-	void update(const Board& board, const Keyboard& kbd, const Controller& pad, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks, std::vector<Projectile>& projectiles);
+	void update(const Board& board, const Keyboard& kbd, const Controller& pad, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks, std::vector<Projectile>& projectiles, bool& raining, std::chrono::steady_clock::time_point& rainStart);
 	bool deathCheck(const std::vector<Obstacle>& obstacles, std::vector<Snake>& sneks);
 	void reset(int x, int y);
 	void accelerate();

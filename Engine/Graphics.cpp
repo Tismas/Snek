@@ -237,6 +237,10 @@ Graphics::Graphics( HWNDKey& key )
 	// allocate memory for sysbuffer (16-byte aligned for faster access)
 	pSysBuffer = reinterpret_cast<Color*>( 
 		_aligned_malloc( sizeof( Color ) * Graphics::ScreenWidth * Graphics::ScreenHeight,16u ) );
+
+	for (int i = 0; i < 100; ++i) {
+		droplets.push_back(Droplet(rand()%799, rand()%599, 3+rand()%10));
+	}
 }
 
 Graphics::~Graphics()
@@ -335,6 +339,18 @@ void Graphics::DrawCircle(int x0, int y0, int r, Color c) {
 				PutPixel(x, y, col);
 			}
 		}
+	}
+}
+
+void Graphics::blurScreen() {
+	
+}
+
+void Graphics::addRainEffect(float dt) {
+	blurScreen();
+	for (int i = 0; i < droplets.size(); ++i) {
+		droplets[i].draw(pSysBuffer, *this, ScreenWidth);
+		droplets[i].update(ScreenHeight,dt);
 	}
 }
 

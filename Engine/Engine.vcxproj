@@ -142,6 +142,7 @@
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="Droplet.h" />
     <ClInclude Include="DXErr.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Apple.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Droplet.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />

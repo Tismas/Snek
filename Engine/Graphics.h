@@ -23,6 +23,8 @@
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
+#include "Droplet.h"
+#include <vector>
 
 #define CHILI_GFX_EXCEPTION( hr,note ) Graphics::Exception( hr,note,_CRT_WIDE(__FILE__),__LINE__ )
 
@@ -60,8 +62,12 @@ public:
 	void PutPixel( int x,int y,Color c );
 	void DrawRect(int x, int y, int width, int height, Color c);
 	void DrawCircle(int x, int y, int r, Color c);
+	void blurScreen();
+	void addRainEffect(float dt);
 	~Graphics();
 private:
+	std::vector<Droplet> droplets;
+
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device>				pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>			pImmediateContext;

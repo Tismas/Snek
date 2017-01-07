@@ -72,6 +72,9 @@
     <ClInclude Include="UICombo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Droplet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -117,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UICombo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Droplet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

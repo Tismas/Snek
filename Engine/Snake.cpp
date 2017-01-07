@@ -44,7 +44,7 @@ Snake::Snake(int x, int y, direction dir, const unsigned char controls[], Color 
 Snake::~Snake() {
 }
 
-void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pad, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks, std::vector<Projectile>& projectiles) {
+void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pad, std::vector<Apple>& apples, float dt, std::vector<Obstacle>& obstacles, const std::vector<Snake>& sneks, std::vector<Projectile>& projectiles, bool& raining, std::chrono::steady_clock::time_point& rainStart) {
 	if (accelerated) {
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<float> duration = now - accelerationTime;
@@ -114,7 +114,7 @@ void Snake::update(const Board& board, const Keyboard& kbd, const Controller& pa
 				if (lastAppleEaten == apples[i].type) {
 					appleCombo++;
 					if (appleCombo == 3) {
-						apples[i].fireEffect(board, sneks, *this, obstacles, apples, projectiles);
+						apples[i].fireEffect(board, sneks, *this, obstacles, apples, projectiles, raining, rainStart);
 						appleCombo = 0;
 						score += 5;
 					}

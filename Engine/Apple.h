@@ -5,7 +5,9 @@
 #include "Colors.h"
 #include "Obstacle.h"
 #include "Projectile.h"
+
 #include <vector>
+#include <chrono>
 
 class Snake;
 
@@ -34,7 +36,7 @@ public:
 	void draw(Board& board) const;
 	void setPos(int x, int y);
 	void reposition(const Board& board, const std::vector<Snake>& sneks, const std::vector<Obstacle>& obstacles);
-	void fireEffect(const Board& board, const std::vector<Snake>& sneks, Snake& snek, std::vector<Obstacle>& obstacles, std::vector<Apple>& apples, std::vector<Projectile>& projectiles);
+	void fireEffect(const Board& board, const std::vector<Snake>& sneks, Snake& snek, std::vector<Obstacle>& obstacles, std::vector<Apple>& apples, std::vector<Projectile>& projectiles, bool& raining, std::chrono::steady_clock::time_point& rainStart);
 
 	friend class Snake;
 };
